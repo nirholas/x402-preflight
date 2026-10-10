@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@three-ws/x402-preflight: Ask an x402 seller whether it can actually settle, before you sign any</title>
+<meta name="description" content="Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments.">
+<link rel="canonical" href="https://nirholas.github.io/x402-preflight/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="three.ws">
+<meta property="og:title" content="@three-ws/x402-preflight">
+<meta property="og:description" content="Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments.">
+<meta property="og:url" content="https://nirholas.github.io/x402-preflight/">
+<meta property="og:image" content="https://nirholas.github.io/x402-preflight/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@three-ws/x402-preflight">
+<meta name="twitter:description" content="Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments.">
+<meta name="twitter:image" content="https://nirholas.github.io/x402-preflight/og.png">
+<meta name="keywords" content="x402, agent-payments, micropayments, preflight, attestation, ed25519, solana, base, usdc, agent, reliability, three.ws, ai-agents">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+<link rel="icon" href="https://three.ws/three-ws-mcp-icon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"@three-ws/x402-preflight","description":"Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments.","codeRepository":"https://github.com/nirholas/x402-preflight","programmingLanguage":"JavaScript","license":"https://spdx.org/licenses/Apache-2.0.html","version":"0.1.0","url":"https://nirholas.github.io/x402-preflight/","author":{"@type":"Organization","name":"three.ws","url":"https://three.ws"},"keywords":"x402, agent-payments, micropayments, preflight, attestation, ed25519, solana, base, usdc, agent, reliability, three.ws, ai-agents"}</script>
+<style>:root{--bg:#fff;--fg:#111418;--mut:#586069;--line:#e3e6ea;--acc:#2563eb;--code:#f4f6f8;--card:#fafbfc}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0d10;--fg:#e8eaed;--mut:#9aa3ad;--line:#232830;--acc:#6ea0ff;--code:#14181d;--card:#10141a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;text-decoration:none;color:var(--fg)}
+.bar nav{margin-left:auto;display:flex;gap:16px;font-size:14px}
+.bar nav a{color:var(--mut);text-decoration:none;transition:color .15s}.bar nav a:hover{color:var(--fg)}
+.hero{max-width:1100px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{color:var(--mut);max-width:70ch;font-size:18px;margin:0 0 24px}
+.install{display:flex;align-items:center;gap:8px;max-width:620px;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 14px}
+.install code{flex:1;overflow-x:auto;white-space:nowrap;font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
+.install button{border:0;background:var(--acc);color:#fff;border-radius:7px;padding:8px 14px;font:600 13px system-ui;cursor:pointer;transition:transform .12s,opacity .12s}
+.install button:hover{opacity:.9}.install button:active{transform:scale(.96)}
+.cta{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.cta a{padding:9px 16px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--fg);transition:border-color .15s,transform .15s}
+.cta a:hover{border-color:var(--acc);transform:translateY(-1px)}.cta a.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.layout{max-width:1100px;margin:0 auto;padding:8px 16px 64px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:40px}
+@media(max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:76px;align-self:start;font-size:14px;border-left:1px solid var(--line);padding-left:16px}
+.toc p{margin:0 0 8px;font-weight:700;color:var(--mut);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.toc ul{list-style:none;margin:0;padding:0}.toc li{margin:6px 0}.toc a{color:var(--mut);text-decoration:none}.toc a:hover{color:var(--fg)}
+main{min-width:0;overflow-wrap:anywhere}main pre code{overflow-wrap:normal}main img{max-width:100%;height:auto}
+main h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.anchor{margin-left:-1.1em;padding-right:.4em;text-decoration:none;opacity:0;color:var(--mut)}h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
+code{font:0.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.15em .35em;border-radius:5px}pre code{background:none;padding:0}
+table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%}th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}th{background:var(--card)}
+blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--mut)}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+.foot-in{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;gap:16px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+<a class="brand" href="https://nirholas.github.io/x402-preflight/">@three-ws/x402-preflight</a>
+<nav aria-label="Project links"><a href="https://github.com/nirholas/x402-preflight">GitHub</a><a href="https://www.npmjs.com/package/@three-ws/x402-preflight">npm</a><a href="llms.txt">llms.txt</a><a href="https://three.ws">three.ws</a></nav>
+</div></header>
+<section class="hero">
+<h1>@three-ws/x402-preflight</h1>
+<p>Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments.</p>
+<div class="install" role="group" aria-label="Install command"><code>npx -y @three-ws/x402-preflight</code><button type="button" data-copy="npx -y @three-ws/x402-preflight">Copy</button></div>
+<div class="cta"><a class="pri" href="https://github.com/nirholas/x402-preflight">View on GitHub</a><a href="https://github.com/nirholas/x402-preflight/stargazers">Star the repo</a></div>
+</section>
+<div class="layout">
+<main id="content"><h1>@three-ws/x402-preflight</h1>
+<p><strong>Ask an x402 seller whether it can actually settle, before you sign anything.</strong></p>
+<p>x402 tells your agent what a resource <em>costs</em>. It says nothing about whether the
+seller can currently <em>settle</em> what it charges. Those look identical right up
+until your agent has already signed, and the difference is paid for by the buyer:
+a burned signature, a consumed blockhash, a <code>502</code>, and no service.</p>
+<pre><code class="language-bash">npm i @three-ws/x402-preflight
+</code></pre>
+<pre><code class="language-js">import { guardedFetch } from &#39;@three-ws/x402-preflight&#39;;
+
+// A drop-in fetch that will not spend your money on a seller who cannot deliver.
+const fetch402 = guardedFetch({ prefer: [&#39;solana:mainnet&#39;] });
+
+const res = await fetch402(&#39;https://three.ws/api/x402/echo&#39;);
+</code></pre>
+<p>That&#39;s it. Before the request that could trigger payment, the seller&#39;s signed
+payability attestation is fetched once (cached for its own lifetime), verified
+offline, and either the request goes through on a rail that works, or it throws
+before your agent signs anything.</p>
+<hr>
+<h2 id="why-this-exists"><a class="anchor" href="#why-this-exists" aria-label="Link to this section">#</a>Why this exists</h2>
+<p>On 2026-08-28, three.ws was the broken seller. Its fee sponsor held 0.000899107
+SOL against a 0.02 SOL floor, so every transaction it fee-paid died at simulation
+with <code>InsufficientFundsForRent</code>. <strong>95 payment attempts, 0 settled, three hours.</strong></p>
+<p>Every one of those buyers could have known before signing, from state the server
+already had. So we published the state, signed it, and wrote the client that
+reads it.</p>
+<h2 id="what-you-get"><a class="anchor" href="#what-you-get" aria-label="Link to this section">#</a>What you get</h2>
+<h3 id="preflightorigin-opts"><a class="anchor" href="#preflightorigin-opts" aria-label="Link to this section">#</a><code>preflight(origin, opts?)</code></h3>
+<p>Fetch and verify a seller&#39;s attestation. Throws <code>PreflightError</code> on transport
+failure, a malformed body, or any check that does not pass.</p>
+<pre><code class="language-js">import { preflight } from &#39;@three-ws/x402-preflight&#39;;
+
+const { report } = await preflight(&#39;https://three.ws&#39;);
+console.log(report.networks[&#39;solana:mainnet&#39;]);
+// { payable: false, reason: &#39;sponsor_below_floor&#39;, retry_after: 300,
+//   settle: { rate: 0, attempts: 95, window_hours: 3, confidence: 0.9 },
+//   alternates: [&#39;eip155:8453&#39;] }
+</code></pre>
+<h3 id="assertpayableorigin-network-opts"><a class="anchor" href="#assertpayableorigin-network-opts" aria-label="Link to this section">#</a><code>assertPayable(origin, network, opts?)</code></h3>
+<p>Throw unless that rail can settle right now. The error carries everything you
+need to recover without another round trip.</p>
+<pre><code class="language-js">import { assertPayable, PreflightError } from &#39;@three-ws/x402-preflight&#39;;
+
+try {
+  await assertPayable(&#39;https://three.ws&#39;, &#39;solana:mainnet&#39;);
+} catch (err) {
+  if (err instanceof PreflightError) {
+    err.reason;      // &#39;sponsor_below_floor&#39;
+    err.alternates;  // [&#39;eip155:8453&#39;]   &lt;- pay here instead
+    err.retryAfter;  // 300               &lt;- or come back in 5 minutes
+  }
+}
+</code></pre>
+<p><code>unknown</code> counts as <strong>not</strong> payable. Your agent is about to make an irreversible
+transfer, so the safe reading of &quot;I cannot tell&quot; is to not pay. Pass
+<code>allowUnknown: true</code> to take the other trade-off, which is a decision worth
+writing down at the call site.</p>
+<h3 id="guardedfetchopts"><a class="anchor" href="#guardedfetchopts" aria-label="Link to this section">#</a><code>guardedFetch(opts?)</code></h3>
+<p>A <code>fetch</code> you can pass anywhere a <code>fetch</code> is accepted.</p>
+<pre><code class="language-js">const fetch402 = guardedFetch({
+  prefer: [&#39;solana:mainnet&#39;, &#39;eip155:8453&#39;],
+  onSkip: (info) =&gt; log.warn(&#39;seller unpayable&#39;, info),
+});
+</code></pre>
+<ul>
+<li>Preflights each origin once, cached for the attestation&#39;s lifetime.</li>
+<li>Picks your preferred rail when it works, the best alternative when it doesn&#39;t.</li>
+<li>Sets <code>x-preflight-network</code> so a seller can answer its <code>402</code> with only the
+accept you can actually pay, removing a negotiation round trip. Sellers that
+ignore it are unaffected.</li>
+<li><strong>Passes through origins that don&#39;t publish an attestation.</strong> That&#39;s the entire
+existing x402 ecosystem, and refusing it would make this unusable on day one.
+Set <code>requirePreflight: true</code> to fail closed instead.</li>
+</ul>
+<h3 id="verifypreflightenvelope-expect"><a class="anchor" href="#verifypreflightenvelope-expect" aria-label="Link to this section">#</a><code>verifyPreflight(envelope, expect?)</code></h3>
+<p>The trust boundary, exported on its own from <code>@three-ws/x402-preflight/verify</code>.
+No I/O, no Node built-ins: it runs unchanged in a browser, a service worker and
+on an edge runtime.</p>
+<pre><code class="language-js">import { verifyPreflight } from &#39;@three-ws/x402-preflight/verify&#39;;
+
+verifyPreflight(envelope, { subject: &#39;https://three.ws&#39;, issuer: KNOWN_KEY });
+// { valid: true, reason: &#39;ok&#39;, issuer: &#39;...&#39;, digest: &#39;...&#39;, expired: false }
+</code></pre>
+<p>It checks all of this, so you cannot forget one:</p>
+<ul>
+<li>the ed25519 signature against the issuer key in the envelope</li>
+<li>the digest, re-derived from the report bytes, so a body edited after signing is
+caught before any curve arithmetic runs</li>
+<li><strong>expiry</strong>, because an expired attestation is not a valid one that happens to
+be old (see below)</li>
+<li>that the report was not stamped in the future</li>
+<li>that <code>subject</code> is the origin you asked about, when you say which</li>
+</ul>
+<p>It never throws. A hostile seller must not be able to crash a paying agent&#39;s
+loop, so every input returns a verdict.</p>
+<h2 id="the-cli"><a class="anchor" href="#the-cli" aria-label="Link to this section">#</a>The CLI</h2>
+<pre><code class="language-bash">npx @three-ws/x402-preflight https://three.ws
+</code></pre>
+<pre><code>https://three.ws  signed by 8k2n…Wq4
+  attestation verified, valid for another 47s
+
+  NOT PAYABLE   solana:mainnet
+    reason   sponsor_below_floor
+    settle   0.0% of 95 attempts over 3h (confidence 0.9)
+    retry    after 300s
+    instead  eip155:8453
+
+  PAYABLE       eip155:8453
+    reason   ok
+    settle   98.0% of 412 attempts over 3h (confidence 0.98)
+</code></pre>
+<p>Exit codes are the point, so it composes:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0</code></td>
+<td>Payable</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>Verified, and <strong>not</strong> payable</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>Could not be verified (no attestation, bad signature, expired, timeout)</td>
+</tr>
+</tbody></table>
+<pre><code class="language-bash">npx @three-ws/x402-preflight https://three.ws --network solana:mainnet &amp;&amp; ./pay.sh
+</code></pre>
+<p><code>--json</code> prints the raw envelope for <code>jq</code>. <code>--issuer &lt;pubkey&gt;</code> pins the signer
+you trust. <code>--timeout &lt;ms&gt;</code> bounds a slow seller.</p>
+<h2 id="why-the-attestation-is-signed"><a class="anchor" href="#why-the-attestation-is-signed" aria-label="Link to this section">#</a>Why the attestation is signed</h2>
+<p>An unsigned health endpoint is a courtesy. A signed, time-bounded one is
+evidence, and three properties follow that a status page cannot give you:</p>
+<p><strong>Attributable.</strong> A client that paid after reading <code>payable: true</code> holds a
+statement signed by the seller&#39;s own key saying the seller believed it could
+settle, at a stated instant. Between autonomous agents transacting with
+strangers, that is the difference between &quot;it broke&quot; and &quot;you said it would
+work&quot;.</p>
+<p><strong>Unreplayable.</strong> Every attestation carries <code>expires_at</code>, and verification
+<em>rejects</em> an expired one. A seller cannot serve a cached healthy attestation
+through an outage, and an attacker who captures one cannot replay it later.</p>
+<p><strong>Relayable.</strong> Because it verifies offline against a public key, a registry or an
+index can cache and forward attestations without becoming trusted. Discovery
+services can rank sellers by measured settleability instead of by
+self-description.</p>
+<h2 id="honesty-rules-the-format-enforces"><a class="anchor" href="#honesty-rules-the-format-enforces" aria-label="Link to this section">#</a>Honesty rules the format enforces</h2>
+<ul>
+<li><code>payable</code> is <strong>three-valued</strong>: <code>true</code>, <code>false</code>, <code>&quot;unknown&quot;</code>. A seller that
+cannot determine its own state must say <code>&quot;unknown&quot;</code>, never <code>true</code>. Every
+failure path degrades to <code>&quot;unknown&quot;</code> rather than to a lie.</li>
+<li>Every rate carries its window and sample size. A seller that settled 3 of 3
+payments overnight reports 100%, which is indistinguishable from a proven rail
+unless <code>attempts</code> travels with it, so <code>confidence</code> is derived from the sample
+and capped below <code>1</code>.</li>
+</ul>
+<h2 id="what-it-does-not-promise"><a class="anchor" href="#what-it-does-not-promise" aria-label="Link to this section">#</a>What it does not promise</h2>
+<ul>
+<li><strong>Not a guarantee.</strong> It is the seller&#39;s signed, timestamped best assessment. A
+rail can fail in the seconds after it signs.</li>
+<li><strong>Not a reputation system.</strong> It reports current settleability, not honesty or
+history. It is an input a reputation system could use.</li>
+<li><strong>It does not stop a seller lying.</strong> It makes lying attributable.</li>
+</ul>
+<h2 id="serving-one-yourself"><a class="anchor" href="#serving-one-yourself" aria-label="Link to this section">#</a>Serving one yourself</h2>
+<p>The wire format is public and unencumbered. Any x402 seller can publish an
+attestation and any client can verify it; nothing routes through three.ws.</p>
+<p>Full contract, including the canonicalization rules and the normative
+verification steps: <a href="https://github.com/nirholas/three.ws/blob/main/specs/x402-preflight.md">specs/x402-preflight.md</a>.</p>
+<p>If you measure nothing yet, report <code>&quot;unknown&quot;</code>. That is honest and still useful:
+a client learns you are not claiming health you cannot back up.</p>
+<h2 id="license"><a class="anchor" href="#license" aria-label="Link to this section">#</a>License</h2>
+<p>Apache-2.0</p>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#why-this-exists">Why this exists</a></li><li><a href="#what-you-get">What you get</a></li><li><a href="#the-cli">The CLI</a></li><li><a href="#why-the-attestation-is-signed">Why the attestation is signed</a></li><li><a href="#honesty-rules-the-format-enforces">Honesty rules the format enforces</a></li><li><a href="#what-it-does-not-promise">What it does not promise</a></li><li><a href="#serving-one-yourself">Serving one yourself</a></li><li><a href="#license">License</a></li></ul></nav>
+</div>
+<footer><div class="foot-in"><span>Apache-2.0 licensed</span><a href="https://github.com/nirholas/x402-preflight/issues">Issues</a><a href="https://github.com/nirholas/x402-preflight/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/nirholas/x402-preflight/security/policy">Security</a><a href="https://three.ws">Part of three.ws</a></div></footer>
+<script>document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+var t=b.getAttribute('data-copy');var done=function(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1400)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}})});</script>
+</body>
+</html>

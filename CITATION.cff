@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it as below.
+title: "@three-ws/x402-preflight"
+abstract: "Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments."
+version: 0.1.0
+license: Apache-2.0
+repository-code: "https://github.com/nirholas/x402-preflight"
+url: "https://three.ws"
+authors:
+  - name: three.ws
+    website: "https://three.ws"

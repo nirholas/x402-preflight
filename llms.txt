@@ -1,0 +1,19 @@
+# @three-ws/x402-preflight
+
+> Ask an x402 seller whether it can actually settle, before you sign anything. Fetches and verifies a signed, time-bounded payability attestation, then routes you to a rail that works. The missing reliability layer for agent payments.
+
+@three-ws/x402-preflight is a JavaScript library from three.ws. Install: `npx -y @three-ws/x402-preflight`.
+
+## Docs
+
+- [README](https://github.com/nirholas/x402-preflight/blob/main/README.md): install, configuration, full reference
+- [Documentation site](https://nirholas.github.io/x402-preflight/): the README as a web page
+- [Full text for LLMs](https://nirholas.github.io/x402-preflight/llms-full.txt): README inlined
+- [AGENTS.md](https://github.com/nirholas/x402-preflight/blob/main/AGENTS.md): guidance for coding agents
+
+## Project
+
+- [Source](https://github.com/nirholas/x402-preflight)
+- [npm](https://www.npmjs.com/package/@three-ws/x402-preflight)
+- [three.ws](https://three.ws): the platform this is part of
+- [Issues](https://github.com/nirholas/x402-preflight/issues)
